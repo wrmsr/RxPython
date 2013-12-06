@@ -10,3 +10,4 @@ docs/params.json
 docs/.nojekyll
 
 dist
+build

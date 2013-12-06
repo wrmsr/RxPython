@@ -52,19 +52,19 @@ def create(subscribe):
       return Disposable.empty()
 
   return AnonymousObservable(wrapper)
-Observable.create = create
+Observable.create = staticmethod(create)
 
 def defer(observableFactory):
   assert callable(observableFactory)
 
   return Defer(observableFactory)
-Observable.defer = defer
+Observable.defer = staticmethod(defer)
 
 def empty(scheduler=Scheduler.constantTimeOperations):
   assert isinstance(scheduler, Scheduler)
 
   return Empty(scheduler)
-Observable.empty = empty
+Observable.empty = staticmethod(empty)
 
 def generate(initialState, condition, iterate, resultSelector, scheduler=Scheduler.iteration):
   assert callable(condition)
@@ -73,29 +73,29 @@ def generate(initialState, condition, iterate, resultSelector, scheduler=Schedul
   assert isinstance(scheduler, Scheduler)
 
   return Generate(initialState, condition, iterate, resultSelector, None, None, scheduler)
-Observable.generate = generate
+Observable.generate = staticmethod(generate)
 
 def never():
   return Never()
-Observable.never = never
+Observable.never = staticmethod(never)
 
 def rangeOp(start, count, scheduler=Scheduler.iteration):
   assert isinstance(scheduler, Scheduler)
 
   return Range(start, count, scheduler)
-Observable.range = rangeOp
+Observable.range = staticmethod(rangeOp)
 
 def repeatValue(value, count=None, scheduler=Scheduler.iteration):
   assert isinstance(scheduler, Scheduler)
 
   return Repeat(value, count, scheduler)
-Observable.repeatValue = repeatValue
+Observable.repeatValue = staticmethod(repeatValue)
 
 def returnOp(value, scheduler=Scheduler.constantTimeOperations):
   assert isinstance(scheduler, Scheduler)
 
   return Return(value, scheduler)
-Observable.returnValue = returnOp
+Observable.returnValue = staticmethod(returnOp)
 
 def start(action, scheduler=Scheduler.default):
   assert isinstance(scheduler, Scheduler)
@@ -114,20 +114,20 @@ def start(action, scheduler=Scheduler.default):
   scheduler.schedule(scheduled)
 
   return subject.asObservable()
-Observable.start = start
+Observable.start = staticmethod(start)
 
 def throw(exception, scheduler=Scheduler.constantTimeOperations):
   assert isinstance(scheduler, Scheduler)
 
   return Throw(exception, scheduler)
-Observable.throw = throw
+Observable.throw = staticmethod(throw)
 
 def using(resourceFactory, observableFactory):
   assert callable(resourceFactory)
   assert callable(observableFactory)
 
   return Using(resourceFactory, observableFactory)
-Observable.using = using
+Observable.using = staticmethod(using)
 
 ####################
 #      From***     #
@@ -151,7 +151,7 @@ def fromFuture(future):
     future.add_done_callback(callback)
 
   return subject
-Observable.fromFuture = fromFuture
+Observable.fromFuture = staticmethod(fromFuture)
 
 def fromEvent(addHandler, removeHandler, scheduler=Scheduler.default):
   assert callable(addHandler)
@@ -159,11 +159,11 @@ def fromEvent(addHandler, removeHandler, scheduler=Scheduler.default):
   assert isinstance(scheduler, Scheduler)
 
   return FromEvent(addHandler, removeHandler, scheduler)
-Observable.fromEvent = fromEvent
+Observable.fromEvent = staticmethod(fromEvent)
 
 def fromIterable(iterable, scheduler=Scheduler.default):
   assert isinstance(iterable, collections.Iterable)
   assert isinstance(scheduler, Scheduler)
 
   return ToObservable(iterable, scheduler)
-Observable.fromIterable = fromIterable
+Observable.fromIterable = staticmethod(fromIterable)

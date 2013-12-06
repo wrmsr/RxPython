@@ -2,7 +2,7 @@ from rx.concurrency import Atomic
 from rx.disposable import Cancelable, Disposable, SingleAssignmentDisposable, SerialDisposable, CompositeDisposable
 from rx.internal import noop, defaultError
 from rx.notification import Notification
-from queue import Empty, Queue
+from Queue import Empty, Queue
 from threading import RLock, Semaphore
 
 class Observer(Disposable):
@@ -171,7 +171,7 @@ class AutoDetachObserver(ObserverBase):
       self.dispose()
 
   def disposable():
-      doc = "The disposable property."
+      """The disposable property."""
       def fget(self):
           self.m.disposable
       def fset(self, value):

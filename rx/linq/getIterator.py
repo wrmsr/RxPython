@@ -2,7 +2,7 @@ from rx.disposable import SingleAssignmentDisposable
 from rx.exceptions import DisposedException
 from rx.observer import Observer
 import rx.linq.sink
-from queue import Empty, Queue
+from Queue import Empty, Queue
 from threading import Semaphore
 
 

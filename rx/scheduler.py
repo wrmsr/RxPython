@@ -4,7 +4,7 @@ from rx.internal import defaultNow, defaultSubComparer
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial as bind
-from queue import Empty, PriorityQueue
+from Queue import Empty, PriorityQueue
 from threading import Thread, Timer, RLock
 from time import sleep
 
@@ -44,10 +44,11 @@ class MetaScheduler(type):
     return defaultScheduler
 
 
-class Scheduler(object, metaclass=MetaScheduler):
+class Scheduler(object):
   """Provides a set of static properties to access commonly
   used Schedulers and implements all the scheduling methods that
   then use the overrides of the implementation."""
+  __metaclass__ = MetaScheduler
 
   @staticmethod
   def invokeAction(scheduler, action):
@@ -108,8 +109,11 @@ class Scheduler(object, metaclass=MetaScheduler):
     return self.schedulePeriodicWithState(None, period, lambda s: action())
 
   def schedulePeriodicWithState(self, state, period, action):
+    _nonlocal = object()
+    _nonlocal.state = state
+    state = None
     def gated():
-      state = action(state)
+      _nonlocal.state = action(_nonlocal.state)
 
     timer = PeriodicTimer(period, gated)
 
@@ -241,21 +245,20 @@ class CatchScheduler(Scheduler):
     return self._recursiveWrapper
 
   def schedulePeriodicWithState(self, state, period, action):
-    failed = False
+    _nonlocal = object()
+    _nonlocal.failed = False
     failureLock = RLock
     d = SingleAssignmentDisposable()
 
     def scheduled(_state):
       with failureLock:
-        nonlocal failed
-
-        if failed:
+        if _nonlocal.failed:
           return None
 
         try:
           return action(_state)
         except Exception as e:
-          failed = True
+          _nonlocal.failed = True
 
           if not self.handler(e):
             raise e
@@ -391,8 +394,11 @@ class DefaultScheduler(Scheduler):
   def schedulePeriodicWithState(self, state, interval, action):
     gate = AsyncLock()
 
+    _nonlocal = object()
+    _nonlocal.state = state
+    state = None
     def gated():
-      state = action(state)
+      _nonlocal.state = action(_nonlocal.state)
 
     timer = PeriodicTimer(interval, lambda: gate.wait(gated))
     cancel = timer.start()

@@ -3,7 +3,7 @@ from rx.observable import Producer
 from rx.observer import Observer
 import rx.linq.sink
 from threading import RLock
-from queue import Queue
+from Queue import Queue
 
 
 class Merge(Producer):

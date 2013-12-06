@@ -230,7 +230,7 @@ class SerialDisposable(Cancelable):
     self.current = None
 
   def disposable():
-    doc = "The disposable property."
+    """The disposable property."""
     def fget(self):
       with self.lock:
         if self.isDisposed:

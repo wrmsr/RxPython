@@ -10,6 +10,8 @@ Using Rx, developers represent asynchronous data streams with Observables,
 query asynchronous data streams using LINQ operators,
 and parameterize the concurrency in the asynchronous data streams using Schedulers.
 Simply put, Rx = Observables + LINQ + Schedulers.
+
+Requires concurrent.futures backport (pip install futures)
 """
 
 version = "0.1"
@@ -33,5 +35,8 @@ setup(name="RxPython",
         "Operating System :: OS Independent",
         # "Topic :: Software Development :: Testing",
         # "Topic :: Software Development :: Quality Assurance",
+      ],
+      install_requires = [
+        "futures",
       ]
 )

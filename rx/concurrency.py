@@ -6,7 +6,7 @@ class Atomic:
     self._value = value
 
   def value():
-      doc = "The value property."
+      """The value property."""
       def fget(self):
           return self._value
       def fset(self, value):

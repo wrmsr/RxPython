@@ -56,7 +56,10 @@ def catchFallback(*sources):
   return CatchFallback(flattedSequence(sources))
 Observable.catchFallback = catchFallback
 
-def combineLatest(*sources, resultSelector=tuple):
+def combineLatest(*sources, **kwargs):
+  resultSelector = kwargs.pop('resultSelector', tuple)
+  if kwargs:
+    raise TypeError(kwargs)
   assert callable(resultSelector)
 
   sources = list(flattedSequence(sources))
@@ -106,6 +109,9 @@ def takeUntil(self, otherOrTime, scheduler=Scheduler.timeBasedOperation):
     return TakeUntilTime(self, otherOrTime, scheduler)
 Observable.takeUntil = takeUntil
 
-def zipOp(*sources, resultSelector=lambda *x: x):
+def zipOp(*sources, **kwargs):
+  resultSelector = kwargs.pop('resultSelector', lambda *x: x)
+  if kwargs:
+    raise TypeError(kwargs)
   return Zip(flattedSequence(sources), resultSelector)
 Observable.zip = zipOp

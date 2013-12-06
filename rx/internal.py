@@ -1,8 +1,8 @@
-from datetime import datetime
+import time
 
 def noop(*args, **kwargs): pass
 def identity(x): return x
-def defaultNow(): return datetime.now().timestamp() # UNIX time on seconds as float
+def defaultNow(): return time.time() # UNIX time on seconds as float
 def defaultEquals(x, y): return x == y
 def defaultCompareTo(x, y): return 1 if x > y else -1 if x < y else 0
 def defaultSubComparer(x, y): return x - y
